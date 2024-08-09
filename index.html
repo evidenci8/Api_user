@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro y Logueo de Usuarios</title>
+  <link rel="icon" href="favicon.ico">
+</head>
+<body>
+  <h2>Registro de Usuario</h2>
+  <form id="registerForm">
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button type="submit">Register</button>
+  </form>
+
+  <h2>Login de Usuario</h2>
+  <form id="loginForm">
+    <input type="email" id="loginEmail" placeholder="Email" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button type="submit">Login</button>
+  </form>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Función para manejar el registro de usuarios
+      async function handleRegister(event) {
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+          const res = await fetch('http://localhost:5000/api/auth/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, email, password })
+          });
+
+          const data = await res.json();
+          if (res.status === 200) {
+            alert('Registro exitoso');
+          } else {
+            alert(`Error: ${data.msg}`);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error al registrar usuario');
+        }
+      }
+
+      // Función para manejar el login de usuarios
+      async function handleLogin(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        try {
+          const res = await fetch('http://localhost:5000/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+          });
+
+          const data = await res.json();
+          if (res.status === 200) {
+            alert('Login exitoso');
+            console.log('Token:', data.token); // Aquí podrías guardar el token en localStorage para usarlo más tarde
+          } else {
+            alert(`Error: ${data.msg}`);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error al iniciar sesión');
+        }
+      }
+
+      // Agregar eventos a los formularios
+      document.getElementById('registerForm').addEventListener('submit', handleRegister);
+      document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    });
+  </script>
+</body>
+</html>
+
