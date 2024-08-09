@@ -15,7 +15,13 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.0",
     "sequelize": "^6.37.3"
+    
   },
+  
   "devDependencies": {},
-  "description": ""
+  "description": "",
+  "engines": {
+    "node": "20.x",
+    "npm": "10.x"
+  }
 }
